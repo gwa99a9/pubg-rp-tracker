@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   weeklyMissions,
   seasonMissions,
@@ -314,7 +314,9 @@ export default function App() {
     });
     if (sort === "rp") list = [...list].sort((a, b) => maxRp(b) - maxRp(a));
     else if (sort === "cards") list = [...list].sort((a, b) => (a.cards ?? 99) - (b.cards ?? 99));
-    return list;
+    // Finished ones drop to the bottom. Array sort is stable, so everything
+    // else keeps the order chosen above.
+    return [...list].sort((a, b) => Number(!!isComplete(a)) - Number(!!isComplete(b)));
   }, [pool, track, week, status, sort, isComplete]);
 
   const grouped = useMemo(() => {
@@ -324,6 +326,8 @@ export default function App() {
       .map((w) => ({ week: w, list: shown.filter((m) => m.week === w) }))
       .filter((g) => g.list.length);
   }, [shown, track, week, sort]);
+
+  const doneStartsAt = (list: Mission[]) => list.findIndex((m) => isComplete(m));
 
   const left = totals.total - totals.earned;
 
@@ -594,20 +598,35 @@ export default function App() {
                     </div>
                   )}
                   <div style={{ border: "1px solid var(--line)" }}>
-                    {g.list.map((m) => (
-                      <MissionRow
-                        key={m.id}
-                        m={m}
-                        done={!!doneMap[m.id]}
-                        reps={repMap[m.id] ?? 0}
-                        onToggle={() => setDoneMap((s) => ({ ...s, [m.id]: !s[m.id] }))}
-                        onStep={(d) =>
-                          setRepMap((s) => ({
-                            ...s,
-                            [m.id]: Math.max(0, Math.min(m.repeats, (s[m.id] ?? 0) + d)),
-                          }))
-                        }
-                      />
+                    {g.list.map((m, i) => (
+                      <Fragment key={m.id}>
+                        {i === doneStartsAt(g.list) && i > 0 && (
+                          <div
+                            className="flex items-center gap-3 px-4 sm:px-5 py-2 border-b"
+                            style={{ background: "#131518" }}
+                          >
+                            <span
+                              className="cond tabular"
+                              style={{ fontSize: 13.5, color: "var(--muted)" }}
+                            >
+                              {g.list.length - i} done
+                            </span>
+                            <span className="flex-1 h-px" style={{ background: "var(--line)" }} />
+                          </div>
+                        )}
+                        <MissionRow
+                          m={m}
+                          done={!!doneMap[m.id]}
+                          reps={repMap[m.id] ?? 0}
+                          onToggle={() => setDoneMap((s) => ({ ...s, [m.id]: !s[m.id] }))}
+                          onStep={(d) =>
+                            setRepMap((s) => ({
+                              ...s,
+                              [m.id]: Math.max(0, Math.min(m.repeats, (s[m.id] ?? 0) + d)),
+                            }))
+                          }
+                        />
+                      </Fragment>
                     ))}
                   </div>
                 </section>
