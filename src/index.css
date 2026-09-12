@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700&family=Saira:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #0e0f11;
+  --panel: #1a1c1f;
+  --panel-hi: #212429;
+  --rust: #3d251e;
+  --rust-hi: #4a2c23;
+  --gold: #f2b01e;
+  --gold-deep: #b7810d;
+  --flare: #ff8a1e;
+  --bone: #d5d1c9;
+  --muted: #8b9096;
+  --line: #2b2e33;
+  --violet: #9b5cc9;
+}
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1100px 520px at 12% -10%, #2a1a14 0%, transparent 62%),
+    var(--ink);
+  background-attachment: fixed;
+  color: var(--bone);
+  font-family: "Saira", ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.cond {
+  font-family: "Saira Condensed", "Arial Narrow", ui-sans-serif, sans-serif;
+}
+
+/* The RP coin, lifted from the in-game reward chip. */
+.coin {
+  clip-path: polygon(25% 4%, 75% 4%, 96% 25%, 96% 75%, 75% 96%, 25% 96%, 4% 75%, 4% 25%);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* One orchestrated moment: the meter fills on load. */
+@keyframes meter {
+  from { transform: scaleX(0); }
+}
+
+.meter-fill {
+  transform-origin: left;
+  animation: meter 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: #34383e; }

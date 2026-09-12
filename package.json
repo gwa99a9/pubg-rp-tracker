@@ -1,0 +1,28 @@
+{
+  "name": "pubg-rp-tracker",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Track PUBG Mobile Royale Pass weekly and season missions, and the RP levels they add up to.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "build:standalone": "BUILD_STANDALONE=1 vite build && node scripts/bundle-standalone.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.5.6",
+    "postcss": "^8.5.28",
+    "tailwindcss": "3.4.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  }
+}
