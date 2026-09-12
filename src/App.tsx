@@ -220,7 +220,7 @@ export default function App() {
   const [ready, setReady] = useState(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "failed">("idle");
   const [confirmReset, setConfirmReset] = useState(false);
-  const [baseLevel, setBaseLevel] = useState(0);
+  const [baseRp, setBaseRp] = useState(0);
 
   const [track, setTrack] = useState<Track>("weekly");
   const [week, setWeek] = useState<WeekSel>("all");
@@ -243,7 +243,8 @@ export default function App() {
         });
         setDoneMap(d);
         setRepMap(r);
-        if (typeof saved.level === "number") setBaseLevel(saved.level);
+        if (typeof saved.baseRp === "number") setBaseRp(saved.baseRp);
+        else if (typeof saved.level === "number") setBaseRp(saved.level * RP_PER_LEVEL);
       }
       setReady(true);
     });
@@ -263,12 +264,12 @@ export default function App() {
         v: 1,
         done: Object.keys(doneMap).filter((id) => doneMap[id]),
         reps: Object.fromEntries(Object.entries(repMap).filter(([, n]) => n > 0)),
-        level: baseLevel,
+        baseRp,
       });
       setSaveState(ok ? "saved" : "failed");
     }, 500);
     return () => window.clearTimeout(timer.current);
-  }, [doneMap, repMap, baseLevel, ready]);
+  }, [doneMap, repMap, baseRp, ready]);
 
   const pool = track === "weekly" ? weeklyMissions : seasonMissions;
 
@@ -336,7 +337,7 @@ export default function App() {
     const season = tally(seasonMissions);
     const open = everything.filter((m) => !isComplete(m));
     return {
-      baseLevel,
+      baseRp,
       bankedRp: weekly.earned + season.earned,
       remainingRp: weekly.total - weekly.earned + (season.total - season.earned),
       weeklyLeft: weekly.total - weekly.earned,
@@ -346,7 +347,7 @@ export default function App() {
       couponsLeft: open.filter((m) => m.rp === null).length,
       missionsLeft: open.length,
     };
-  }, [tally, isComplete, baseLevel]);
+  }, [tally, isComplete, baseRp]);
 
   const markWeek = (w: Week, value: boolean) => {
     const ids = weeklyMissions.filter((m) => m.week === w);
@@ -397,7 +398,7 @@ export default function App() {
         </header>
 
         {/* ---------- pass level ---------- */}
-        <PassStatus f={figures} onLevelChange={setBaseLevel} />
+        <PassStatus f={figures} onBaseRpChange={setBaseRp} />
 
         {/* ---------- track tabs ---------- */}
         <nav className="mt-10 flex" aria-label="Challenge type">

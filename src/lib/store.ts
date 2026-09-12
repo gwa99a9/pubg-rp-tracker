@@ -13,7 +13,9 @@ export type Saved = {
   v: 1;
   done: string[];
   reps: Record<string, number>;
-  /** RP level the player typed in from the game. */
+  /** RP held outside the mission lists — the figure the player adjusts. */
+  baseRp?: number;
+  /** Older saves stored a level instead. Read for migration, never written. */
   level?: number;
 };
 

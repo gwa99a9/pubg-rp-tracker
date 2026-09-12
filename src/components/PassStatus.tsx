@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
 import { MAX_LEVEL, RP_PER_LEVEL } from "@/data/missions";
 
 const fmt = (n: number) => n.toLocaleString("en-US");
+const RP_CAP = MAX_LEVEL * RP_PER_LEVEL;
 
 export type StatusFigures = {
-  baseLevel: number;
+  /** RP the player holds from everything except the missions in the lists. */
+  baseRp: number;
   bankedRp: number;
   remainingRp: number;
   weeklyLeft: number;
@@ -45,22 +48,75 @@ function Stat({
   );
 }
 
+/** Number box that lets you clear it while typing without snapping to 0. */
+function NumberField({
+  id,
+  value,
+  max,
+  step,
+  width,
+  onCommit,
+}: {
+  id: string;
+  value: number;
+  max: number;
+  step: number;
+  width: number;
+  onCommit: (n: number) => void;
+}) {
+  const [draft, setDraft] = useState(String(value));
+  useEffect(() => setDraft(String(value)), [value]);
+
+  return (
+    <input
+      id={id}
+      type="number"
+      inputMode="numeric"
+      min={0}
+      max={max}
+      step={step}
+      value={draft}
+      onChange={(e) => {
+        setDraft(e.target.value);
+        if (e.target.value === "") return;
+        const n = Number(e.target.value);
+        if (Number.isFinite(n)) onCommit(Math.max(0, Math.min(max, Math.floor(n))));
+      }}
+      onBlur={() => {
+        if (draft === "") {
+          setDraft("0");
+          onCommit(0);
+        }
+      }}
+      className="cond tabular h-8 px-2"
+      style={{
+        fontSize: 15,
+        width,
+        color: "#e8e4dd",
+        background: "#16181b",
+        border: "1px solid var(--line)",
+      }}
+    />
+  );
+}
+
 export function PassStatus({
   f,
-  onLevelChange,
+  onBaseRpChange,
 }: {
   f: StatusFigures;
-  onLevelChange: (n: number) => void;
+  onBaseRpChange: (n: number) => void;
 }) {
-  const heldRp = f.baseLevel * RP_PER_LEVEL + f.bankedRp;
+  const heldRp = Math.min(RP_CAP, f.baseRp + f.bankedRp);
   const level = Math.min(MAX_LEVEL, Math.floor(heldRp / RP_PER_LEVEL));
   const intoLevel = level >= MAX_LEVEL ? RP_PER_LEVEL : heldRp % RP_PER_LEVEL;
   const toNext = level >= MAX_LEVEL ? 0 : RP_PER_LEVEL - intoLevel;
 
   const finishAll = Math.min(MAX_LEVEL, Math.floor((heldRp + f.remainingRp) / RP_PER_LEVEL));
-  const capRp = MAX_LEVEL * RP_PER_LEVEL;
-  const shortfall = Math.max(0, capRp - heldRp - f.remainingRp);
+  const shortfall = Math.max(0, RP_CAP - heldRp - f.remainingRp);
   const levelPct = level / MAX_LEVEL;
+
+  const nudge = (d: number) => onBaseRpChange(Math.max(0, Math.min(RP_CAP, f.baseRp + d)));
 
   return (
     <section
@@ -133,17 +189,82 @@ export function PassStatus({
         </div>
       </div>
 
+      {/* ---------- the adjustable total ---------- */}
       <div
-        className="grid grid-cols-2 sm:grid-cols-4 gap-x-5 gap-y-5 px-5 sm:px-6 py-5"
+        className="px-5 sm:px-6 py-4"
         style={{ borderTop: "1px solid var(--line)", background: "rgba(0,0,0,.18)" }}
       >
+        <label className="cond block" htmlFor="base-rp" style={{ fontSize: 14, color: "var(--muted)" }}>
+          RP you hold outside these missions
+        </label>
+
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+          <div className="flex items-center gap-2">
+            <NumberField
+              id="base-rp"
+              value={f.baseRp}
+              max={RP_CAP}
+              step={10}
+              width={92}
+              onCommit={onBaseRpChange}
+            />
+            <span className="cond" style={{ fontSize: 14, color: "var(--muted)" }}>
+              RP
+            </span>
+          </div>
+
+          <div className="flex" style={{ border: "1px solid var(--line)" }}>
+            {[-100, -10, 10, 100].map((d, i) => (
+              <button
+                key={d}
+                onClick={() => nudge(d)}
+                aria-label={`${d > 0 ? "Add" : "Subtract"} ${Math.abs(d)} RP`}
+                className="cond tabular px-2.5 h-8"
+                style={{
+                  fontSize: 14,
+                  color: "var(--bone)",
+                  borderLeft: i ? "1px solid var(--line)" : "none",
+                }}
+              >
+                {d > 0 ? `+${d}` : d}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <label className="cond" htmlFor="base-level" style={{ fontSize: 14, color: "var(--muted)" }}>
+              or set by level
+            </label>
+            <NumberField
+              id="base-level"
+              value={Math.floor(f.baseRp / RP_PER_LEVEL)}
+              max={MAX_LEVEL}
+              step={1}
+              width={64}
+              onCommit={(n) => onBaseRpChange(n * RP_PER_LEVEL)}
+            />
+          </div>
+        </div>
+
+        <p className="cond tabular m-0 mt-3" style={{ fontSize: 14, color: "#e8e4dd" }}>
+          {fmt(f.baseRp)} + {fmt(f.bankedRp)} from ticked missions ={" "}
+          <span style={{ color: "var(--gold)", fontWeight: 600 }}>{fmt(heldRp)} RP</span> so
+          far.
+        </p>
+        <p className="cond m-0 mt-1" style={{ fontSize: 13, color: "#5f6369" }}>
+          Bump this figure whenever RP arrives from somewhere else — matches, BP, events,
+          rank rewards. Keep the missions below as ticks so they aren't counted twice.
+        </p>
+      </div>
+
+      <div
+        className="grid grid-cols-2 sm:grid-cols-4 gap-x-5 gap-y-5 px-5 sm:px-6 py-5"
+        style={{ borderTop: "1px solid var(--line)" }}
+      >
         <Stat
-          label="Banked from missions"
-          value={`${fmt(f.bankedRp)} RP`}
-          sub={(() => {
-            const lv = Math.floor(f.bankedRp / RP_PER_LEVEL);
-            return lv === 1 ? "1 level so far" : `${lv} levels so far`;
-          })()}
+          label="RP so far"
+          value={fmt(heldRp)}
+          sub={`${level} ${level === 1 ? "level" : "levels"} banked`}
           tone="var(--gold)"
         />
         <Stat
@@ -158,40 +279,10 @@ export function PassStatus({
         />
         <Stat
           label={shortfall > 0 ? "Short of level 100" : "Spare RP over level 100"}
-          value={`${fmt(shortfall > 0 ? shortfall : heldRp + f.remainingRp - capRp)} RP`}
+          value={`${fmt(shortfall > 0 ? shortfall : heldRp + f.remainingRp - RP_CAP)} RP`}
           sub={shortfall > 0 ? "must come from matches and BP" : "missions alone cover it"}
           tone={shortfall > 0 ? "#d98a5a" : "#7fb069"}
         />
-      </div>
-
-      <div
-        className="px-5 sm:px-6 py-3 flex flex-wrap items-center gap-x-3 gap-y-2"
-        style={{ borderTop: "1px solid var(--line)" }}
-      >
-        <label className="cond" htmlFor="base-level" style={{ fontSize: 14, color: "var(--muted)" }}>
-          Level you're already at in game
-        </label>
-        <input
-          id="base-level"
-          type="number"
-          min={0}
-          max={MAX_LEVEL}
-          value={f.baseLevel}
-          onChange={(e) => {
-            const n = Number(e.target.value);
-            onLevelChange(Number.isFinite(n) ? Math.max(0, Math.min(MAX_LEVEL, Math.floor(n))) : 0);
-          }}
-          className="cond tabular w-[72px] h-8 px-2"
-          style={{
-            fontSize: 15,
-            color: "#e8e4dd",
-            background: "#16181b",
-            border: "1px solid var(--line)",
-          }}
-        />
-        <span className="cond" style={{ fontSize: 13.5, color: "#5f6369" }}>
-          Ticked missions stack on top of this, so set it before you start ticking.
-        </span>
       </div>
     </section>
   );

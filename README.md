@@ -14,6 +14,9 @@ two people opening the same page see their own lists.
 - **Season challenges** — 30 missions worth 4,100 RP.
 - **Pass level** — your level out of 100, RP needed for the next one, and how far
   every remaining mission would carry you.
+- **An adjustable RP total** — set the RP you hold from everything else (matches,
+  BP, events, rank rewards) either as a raw number or by level, and mission ticks
+  stack on top of it.
 
 Both lists together are worth 6,360 RP. A level costs 100 RP and the pass runs
 to 100, so missions alone cover 63 levels; the rest has to come from matches,
