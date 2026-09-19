@@ -14,7 +14,7 @@ export const MAX_LEVEL = 100;
 
 /** Weeks the pass runs for. Weeks past `releasedWeeks` are shown but locked. */
 export const TOTAL_WEEKS = 5;
-export const releasedWeeks: Week[] = [1, 2];
+export const releasedWeeks: Week[] = [1, 2, 3];
 
 export type Week = 1 | 2 | 3 | 4 | 5;
 
@@ -283,6 +283,135 @@ export const weeklyMissions: Mission[] = [
     text: "Finish in the Top 10 in Livik 1 time in Classic Mode.",
     rp: 30,
     repeats: 1,
+  },
+
+  // ---------- WEEK 3 ----------
+  {
+    id: "w3-climb",
+    week: 3,
+    tag: "Elite",
+    text: "Climb over obstacles 10 times in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w3-sosnovka",
+    week: 3,
+    tag: "Elite",
+    text: "Land on any rooftop in Sosnovka Military Base (Erangel) 1 time in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w3-longshot",
+    week: 3,
+    tag: "Elite",
+    text: "Eliminate an enemy from 100 meters away 2 times in Classic Mode.",
+    rp: null,
+    item: "Crate coupon \u00d71",
+    repeats: 1,
+  },
+  {
+    id: "w3-grind",
+    week: 3,
+    tag: "Repeatable",
+    text: "(Week 3 only) Spend 60 minutes in matches.",
+    rp: 60,
+    repeats: 6,
+  },
+  {
+    id: "w3-rescue",
+    week: 3,
+    tag: "Friend Boost",
+    text: "Rescue teammates 10 times in Classic Mode.",
+    rp: 150,
+    repeats: 1,
+    cards: 6,
+  },
+  {
+    id: "w3-lmg",
+    week: 3,
+    tag: "Friend Bonus",
+    text: "Eliminate 5 enemies with LMG in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w3-airdrop",
+    week: 3,
+    tag: "Team Boost",
+    text: "Open air drops 6 times with teammates in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w3-akm",
+    week: 3,
+    tag: null,
+    text: "Pick up AKM in 5 matches in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w3-vampires",
+    week: 3,
+    tag: null,
+    text: "Eliminate 10 PvE vampires in Classic Mode \u2013 Midnight Hunters.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w3-login",
+    week: 3,
+    tag: null,
+    text: "(Week 3 only) Log into the game on a total of 3 days.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    // Also appeared at the top of the next screenshot. Kept once.
+    id: "w3-medpack",
+    week: 3,
+    tag: null,
+    text: "Pick up a Portable Med Pack 1 time in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    // Same overlap as the row above.
+    id: "w3-m416",
+    week: 3,
+    tag: null,
+    text: "Eliminate 1 enemy with M416 in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    id: "w3-medkit",
+    week: 3,
+    tag: null,
+    text: "Use a Med Kit 1 time in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    id: "w3-jadena",
+    week: 3,
+    tag: null,
+    text: "Land in any area of Jadena City (Rondo) 1 time in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
   },
 ];
 

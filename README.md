@@ -9,8 +9,8 @@ two people opening the same page see their own lists.
 
 ## What it shows
 
-- **Weekly challenges** — 28 missions across weeks 1 and 2, worth 2,260 RP.
-  Weeks 3 to 5 appear locked until they drop.
+- **Weekly challenges** — 42 missions across weeks 1 to 3, worth 3,390 RP.
+  Weeks 4 and 5 appear locked until they drop.
 - **Season challenges** — 30 missions worth 4,100 RP.
 - **Pass level** — your level out of 100, RP needed for the next one, and how far
   every remaining mission would carry you.
@@ -18,8 +18,8 @@ two people opening the same page see their own lists.
   BP, events, rank rewards) either as a raw number or by level, and mission ticks
   stack on top of it.
 
-Both lists together are worth 6,360 RP. A level costs 100 RP and the pass runs
-to 100, so missions alone cover 63 levels; the rest has to come from matches,
+Both lists together are worth 7,490 RP. A level costs 100 RP and the pass runs
+to 100, so missions alone cover 74 levels; the rest has to come from matches,
 BP and events. The tracker makes that gap explicit instead of letting you
 assume missions are enough.
 
@@ -55,7 +55,7 @@ API — edit the file, commit, done.
 Add the missions with the right `week`, then widen `releasedWeeks`:
 
 ```ts
-export const releasedWeeks: Week[] = [1, 2, 3];
+export const releasedWeeks: Week[] = [1, 2, 3, 4];
 ```
 
 The week button unlocks, a new section appears, and every total recalculates.
@@ -64,8 +64,8 @@ The week button unlocks, a new section appears, and every total recalculates.
 
 ```ts
 {
-  id: "w3-headshots",     // unique; progress is saved against this
-  week: 3,                // omit for season challenges
+  id: "w4-headshots",     // unique; progress is saved against this
+  week: 4,                // omit for season challenges
   tag: "Elite",           // or null, "Friend Boost", "Team Boost",
                           // "Friend Bonus", "Repeatable"
   text: "Eliminate 5 enemies with headshots in Classic Mode.",
