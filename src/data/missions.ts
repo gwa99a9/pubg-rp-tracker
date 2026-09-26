@@ -14,7 +14,7 @@ export const MAX_LEVEL = 100;
 
 /** Weeks the pass runs for. Weeks past `releasedWeeks` are shown but locked. */
 export const TOTAL_WEEKS = 5;
-export const releasedWeeks: Week[] = [1, 2, 3];
+export const releasedWeeks: Week[] = [1, 2, 3, 4];
 
 export type Week = 1 | 2 | 3 | 4 | 5;
 
@@ -412,6 +412,123 @@ export const weeklyMissions: Mission[] = [
     rp: 30,
     repeats: 1,
     cards: 1,
+  },
+
+  // ---------- WEEK 4 ----------
+  {
+    id: "w4-compensator",
+    week: 4,
+    tag: "Elite",
+    text: "Pick up Compensator in 5 matches in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w4-quickkill",
+    week: 4,
+    tag: "Elite",
+    text: "Eliminate 1 enemy within 60 seconds of landing in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w4-spetsnaz-pickup",
+    week: 4,
+    tag: "Elite",
+    text: "Pick up Spetsnaz Helmet (Lv. 3) 2 times in Classic Mode.",
+    rp: null,
+    item: "Crate coupon \u00d71",
+    repeats: 1,
+  },
+  {
+    id: "w4-grind",
+    week: 4,
+    tag: "Repeatable",
+    text: "(Week 4 only) Spend 60 minutes in matches.",
+    rp: 60,
+    repeats: 6,
+  },
+  {
+    id: "w4-smg",
+    week: 4,
+    tag: "Friend Boost",
+    text: "Eliminate 5 enemies with an SMG in Erangel in Classic Mode.",
+    rp: 150,
+    repeats: 1,
+    cards: 6,
+  },
+  {
+    id: "w4-top3",
+    week: 4,
+    tag: "Friend Bonus",
+    text: "Finish 3 times in the Top 3 in Classic Mode with friends.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w4-login",
+    week: 4,
+    tag: null,
+    text: "(Week 4 only) Log into the game on a total of 3 days.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w4-giftbp",
+    week: 4,
+    tag: null,
+    text: "Gift or gift back BP to 3 different friends.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    id: "w4-tires",
+    week: 4,
+    tag: null,
+    text: "Destroy 2 vehicle tires in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    // Appeared in two screenshots; kept once.
+    id: "w4-pan",
+    week: 4,
+    tag: "Team Boost",
+    text: "Eliminate players with the Pan 2 times with teammates in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+  },
+  {
+    // Same overlap as the row above.
+    id: "w4-clanbattle",
+    week: 4,
+    tag: null,
+    text: "Obtain 50 Contribution Points during the Clan Battle event.",
+    rp: 60,
+    repeats: 1,
+  },
+  {
+    // Same overlap as the two rows above.
+    id: "w4-arena",
+    week: 4,
+    tag: null,
+    text: "Eliminate more than 10 players in a single Arena Mode match.",
+    rp: 60,
+    repeats: 1,
+  },
+  {
+    id: "w4-rinjiang",
+    week: 4,
+    tag: null,
+    text: "Land in any area of Rin Jiang (Rondo) 1 time in Classic Mode.",
+    rp: 30,
+    repeats: 1,
   },
 ];
 

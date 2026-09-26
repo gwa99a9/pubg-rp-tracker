@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { MAX_LEVEL, RP_PER_LEVEL } from "@/data/missions";
 
 const fmt = (n: number) => n.toLocaleString("en-US");
-const RP_CAP = MAX_LEVEL * RP_PER_LEVEL;
+/** RP needed to reach the level-100 milestone. Levels keep going past it. */
+const TARGET_RP = MAX_LEVEL * RP_PER_LEVEL;
+/** Sanity ceiling for the input boxes, not a cap on the maths. */
+const INPUT_RP_MAX = 99_999;
 
 export type StatusFigures = {
   /** RP the player holds from everything except the missions in the lists. */
@@ -107,16 +110,24 @@ export function PassStatus({
   f: StatusFigures;
   onBaseRpChange: (n: number) => void;
 }) {
-  const heldRp = Math.min(RP_CAP, f.baseRp + f.bankedRp);
-  const level = Math.min(MAX_LEVEL, Math.floor(heldRp / RP_PER_LEVEL));
-  const intoLevel = level >= MAX_LEVEL ? RP_PER_LEVEL : heldRp % RP_PER_LEVEL;
-  const toNext = level >= MAX_LEVEL ? 0 : RP_PER_LEVEL - intoLevel;
+  // Levels do not stop at 100 — the milestone is a marker, not a ceiling.
+  const heldRp = f.baseRp + f.bankedRp;
+  const level = Math.floor(heldRp / RP_PER_LEVEL);
+  const intoLevel = heldRp % RP_PER_LEVEL;
+  const toNext = RP_PER_LEVEL - intoLevel;
+  const pastNow = Math.max(0, level - MAX_LEVEL);
 
-  const finishAll = Math.min(MAX_LEVEL, Math.floor((heldRp + f.remainingRp) / RP_PER_LEVEL));
-  const shortfall = Math.max(0, RP_CAP - heldRp - f.remainingRp);
-  const levelPct = level / MAX_LEVEL;
+  const finishRp = heldRp + f.remainingRp;
+  const finishAll = Math.floor(finishRp / RP_PER_LEVEL);
+  const pastFinish = Math.max(0, finishAll - MAX_LEVEL);
+  const shortfall = Math.max(0, TARGET_RP - finishRp);
+  const spareRp = Math.max(0, finishRp - TARGET_RP);
 
-  const nudge = (d: number) => onBaseRpChange(Math.max(0, Math.min(RP_CAP, f.baseRp + d)));
+  const levelPct = Math.min(1, level / MAX_LEVEL);
+  const hatchPct =
+    Math.max(0, Math.min(MAX_LEVEL, finishAll) - Math.min(MAX_LEVEL, level)) / MAX_LEVEL;
+
+  const nudge = (d: number) => onBaseRpChange(Math.max(0, Math.min(INPUT_RP_MAX, f.baseRp + d)));
 
   return (
     <section
@@ -138,7 +149,7 @@ export function PassStatus({
                 {level}
               </span>
               <span className="cond" style={{ fontSize: 21, color: "var(--gold-deep)" }}>
-                of {MAX_LEVEL}
+                {pastNow > 0 ? `+${pastNow} past ${MAX_LEVEL}` : `of ${MAX_LEVEL}`}
               </span>
             </div>
           </div>
@@ -155,9 +166,7 @@ export function PassStatus({
               />
             </div>
             <p className="cond tabular m-0 mt-2" style={{ fontSize: 14.5, color: "#e8e4dd" }}>
-              {level >= MAX_LEVEL
-                ? "Pass maxed out."
-                : `${intoLevel} of ${RP_PER_LEVEL} RP into this level — ${toNext} more reaches level ${level + 1}.`}
+              {`${intoLevel} of ${RP_PER_LEVEL} RP into this level — ${toNext} more reaches level ${level + 1}.`}
             </p>
           </div>
         </div>
@@ -177,14 +186,17 @@ export function PassStatus({
               className="absolute top-0 h-full"
               style={{
                 left: `${levelPct * 100}%`,
-                width: `${Math.max(0, (finishAll - level) / MAX_LEVEL) * 100}%`,
+                width: `${hatchPct * 100}%`,
                 background: "repeating-linear-gradient(90deg,#5c4a1f 0 6px,transparent 6px 11px)",
               }}
             />
           </div>
           <p className="cond tabular m-0 mt-2" style={{ fontSize: 13.5, color: "var(--muted)" }}>
             Solid is where you are. Hatched is where every remaining mission would carry
-            you — level {finishAll}.
+            you — level {finishAll}
+            {pastFinish > 0
+              ? `, which is ${pastFinish} past ${MAX_LEVEL} on ${fmt(finishRp)} RP.`
+              : "."}
           </p>
         </div>
       </div>
@@ -203,7 +215,7 @@ export function PassStatus({
             <NumberField
               id="base-rp"
               value={f.baseRp}
-              max={RP_CAP}
+              max={INPUT_RP_MAX}
               step={10}
               width={92}
               onCommit={onBaseRpChange}
@@ -238,7 +250,7 @@ export function PassStatus({
             <NumberField
               id="base-level"
               value={Math.floor(f.baseRp / RP_PER_LEVEL)}
-              max={MAX_LEVEL}
+              max={Math.floor(INPUT_RP_MAX / RP_PER_LEVEL)}
               step={1}
               width={64}
               onCommit={(n) => onBaseRpChange(n * RP_PER_LEVEL)}
@@ -264,7 +276,11 @@ export function PassStatus({
         <Stat
           label="RP so far"
           value={fmt(heldRp)}
-          sub={`${level} ${level === 1 ? "level" : "levels"} banked`}
+          sub={
+            pastNow > 0
+              ? `level ${level} — ${pastNow} past ${MAX_LEVEL}`
+              : `level ${level} · ${fmt(TARGET_RP - heldRp)} RP to ${MAX_LEVEL}`
+          }
           tone="var(--gold)"
         />
         <Stat
@@ -278,9 +294,13 @@ export function PassStatus({
           sub={`${fmt(f.cardsLeft)} mission cards to buy out`}
         />
         <Stat
-          label={shortfall > 0 ? "Short of level 100" : "Spare RP over level 100"}
-          value={`${fmt(shortfall > 0 ? shortfall : heldRp + f.remainingRp - RP_CAP)} RP`}
-          sub={shortfall > 0 ? "must come from matches and BP" : "missions alone cover it"}
+          label={shortfall > 0 ? `Short of level ${MAX_LEVEL}` : `Clears level ${MAX_LEVEL} by`}
+          value={shortfall > 0 ? `${fmt(shortfall)} RP` : `+${pastFinish} ${pastFinish === 1 ? "level" : "levels"}`}
+          sub={
+            shortfall > 0
+              ? "must come from matches and BP"
+              : `${fmt(spareRp)} RP past the milestone`
+          }
           tone={shortfall > 0 ? "#d98a5a" : "#7fb069"}
         />
       </div>
