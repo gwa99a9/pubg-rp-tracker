@@ -13,10 +13,10 @@ export const RP_PER_LEVEL = 100;
 export const MAX_LEVEL = 100;
 
 /** Weeks the pass runs for. Weeks past `releasedWeeks` are shown but locked. */
-export const TOTAL_WEEKS = 5;
-export const releasedWeeks: Week[] = [1, 2, 3, 4];
+export const TOTAL_WEEKS = 8;
+export const releasedWeeks: Week[] = [1, 2, 3, 4, 5, 6];
 
-export type Week = 1 | 2 | 3 | 4 | 5;
+export type Week = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export type Mission = {
   id: string;
@@ -527,6 +527,237 @@ export const weeklyMissions: Mission[] = [
     week: 4,
     tag: null,
     text: "Land in any area of Rin Jiang (Rondo) 1 time in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+  },
+
+  // ---------- WEEK 5 ----------
+  {
+    id: "w5-spetsnaz-win",
+    week: 5,
+    tag: "Elite",
+    text: "Win a Classic match 1 time while wearing a Spetsnaz Helmet (Lv. 3).",
+    rp: 100,
+    repeats: 1,
+  },
+  {
+    id: "w5-energy",
+    week: 5,
+    tag: "Elite",
+    text: "Use Energy Drink 10 times in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+  },
+  {
+    id: "w5-prone",
+    week: 5,
+    tag: "Elite",
+    text: "Eliminate 3 players while prone in Classic Mode.",
+    rp: null,
+    item: "Crate coupon \u00d71",
+    repeats: 1,
+  },
+  {
+    id: "w5-grind",
+    week: 5,
+    tag: "Repeatable",
+    text: "(Week 5 only) Spend 60 minutes in matches.",
+    rp: 60,
+    repeats: 6,
+  },
+  {
+    id: "w5-ar-erangel",
+    week: 5,
+    tag: "Friend Boost",
+    text: "Eliminate 20 enemies with Assault Rifles in Erangel in Classic Mode.",
+    rp: 150,
+    repeats: 1,
+  },
+  {
+    // The coin reads 60+30 once the friend bonus lands; 60 is the base value.
+    id: "w5-friend-matches",
+    week: 5,
+    tag: "Friend Bonus",
+    text: "Complete 5 matches with friends in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+  },
+  {
+    id: "w5-flaregun",
+    week: 5,
+    tag: "Team Boost",
+    text: "Pick up the Flare Gun in 3 matches with teammates in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w5-awm",
+    week: 5,
+    tag: null,
+    text: "Pick up an AWM 1 time in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+  },
+  {
+    id: "w5-m416",
+    week: 5,
+    tag: null,
+    text: "Eliminate 10 enemies with M416 in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+  },
+  {
+    // Appeared in two screenshots; kept once.
+    id: "w5-login",
+    week: 5,
+    tag: null,
+    text: "(Week 5 only) Log into the game on a total of 3 days.",
+    rp: 60,
+    repeats: 1,
+  },
+  {
+    // Same overlap as the row above.
+    id: "w5-meyran",
+    week: 5,
+    tag: null,
+    text: "Land in any area of Mey Ran (Rondo) 1 time in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+  },
+  {
+    // Same overlap as the two rows above.
+    id: "w5-vehicle",
+    week: 5,
+    tag: null,
+    text: "Travel more than 2000 meters while operating any vehicle in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+  },
+  {
+    id: "w5-sociallobby",
+    week: 5,
+    tag: null,
+    text: "Visit the Social Lobby of 3 different friends.",
+    rp: 30,
+    repeats: 1,
+  },
+
+  // ---------- WEEK 6 ----------
+  {
+    id: "w6-firstaid",
+    week: 6,
+    tag: "Elite",
+    text: "Use First Aid Kit 10 times in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w6-ghillie",
+    week: 6,
+    tag: "Elite",
+    text: "Pick up Ghillie Suit 1 time in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w6-grind",
+    week: 6,
+    tag: "Repeatable",
+    text: "(Week 6 only) Spend 60 minutes in matches.",
+    rp: 60,
+    repeats: 6,
+  },
+  {
+    id: "w6-attachments",
+    week: 6,
+    tag: "Friend Boost",
+    text: "Equip 2 firearms with full attachments at the same time in 3 Classic Mode matches.",
+    rp: 150,
+    repeats: 1,
+    cards: 6,
+  },
+  {
+    id: "w6-m249",
+    week: 6,
+    tag: "Friend Bonus",
+    text: "Eliminate 3 enemies with M249 in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w6-vehiclekill",
+    week: 6,
+    tag: "Team Boost",
+    text: "Eliminate players with vehicles 1 time with teammates in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w6-dbs",
+    week: 6,
+    tag: null,
+    text: "Eliminate 1 enemy with DBS in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w6-pistol",
+    week: 6,
+    tag: null,
+    text: "Eliminate 3 enemies with a Pistol in any mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w6-login",
+    week: 6,
+    tag: null,
+    text: "(Week 6 only) Log into the game on a total of 3 days.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    // Appeared in two screenshots; kept once.
+    id: "w6-arena",
+    week: 6,
+    tag: null,
+    text: "Deal 500 damage in Arena Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    // Same overlap as the row above.
+    id: "w6-headshot200",
+    week: 6,
+    tag: "Elite",
+    text: "Deal a total of 200 damage with headshots in Classic Mode.",
+    rp: null,
+    item: "Crate coupon \u00d71",
+    repeats: 1,
+  },
+  {
+    // Same overlap as the two rows above.
+    id: "w6-m762",
+    week: 6,
+    tag: null,
+    text: "Eliminate 1 enemy with M762 in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+  },
+  {
+    id: "w6-rescue",
+    week: 6,
+    tag: null,
+    text: "Rescue teammates 1 time in Classic Mode.",
     rp: 30,
     repeats: 1,
   },
