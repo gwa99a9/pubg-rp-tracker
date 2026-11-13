@@ -9,8 +9,8 @@ two people opening the same page see their own lists.
 
 ## What it shows
 
-- **Weekly challenges** — 81 missions across weeks 1 to 6, worth 6,690 RP.
-  Weeks 7 and 8 appear locked until they drop.
+- **Weekly challenges** — 28 missions across weeks 1 and 2, worth 2,260 RP.
+  Weeks 3 to 5 appear locked until they drop.
 - **Season challenges** — 30 missions worth 4,100 RP.
 - **Pass level** — your level out of 100, RP needed for the next one, and how far
   every remaining mission would carry you.
@@ -18,8 +18,8 @@ two people opening the same page see their own lists.
   BP, events, rank rewards) either as a raw number or by level, and mission ticks
   stack on top of it.
 
-Both lists together are worth 10,790 RP. A level costs 100 RP, so the missions
-alone are worth 107 levels. Level 100 is a milestone rather than a ceiling — the
+Both lists together are worth 6,360 RP. A level costs 100 RP, so the missions
+alone are worth 63 levels. Level 100 is a milestone rather than a ceiling — the
 tracker keeps counting levels and RP past it. The tracker makes that gap explicit instead of letting you
 assume missions are enough.
 
@@ -55,7 +55,7 @@ API — edit the file, commit, done.
 Add the missions with the right `week`, then widen `releasedWeeks`:
 
 ```ts
-export const releasedWeeks: Week[] = [1, 2, 3, 4, 5, 6, 7];
+export const releasedWeeks: Week[] = [1, 2, 3];
 ```
 
 The week button unlocks, a new section appears, and every total recalculates.
@@ -64,8 +64,8 @@ The week button unlocks, a new section appears, and every total recalculates.
 
 ```ts
 {
-  id: "w7-headshots",     // unique; progress is saved against this
-  week: 7,                // omit for season challenges
+  id: "w3-headshots",     // unique; progress is saved against this
+  week: 3,                // omit for season challenges
   tag: "Elite",           // or null, "Friend Boost", "Team Boost",
                           // "Friend Bonus", "Repeatable"
   text: "Eliminate 5 enemies with headshots in Classic Mode.",
@@ -79,12 +79,28 @@ The week button unlocks, a new section appears, and every total recalculates.
 for anyone who had already ticked it. Adding and removing missions is safe —
 unknown ids in saved data are ignored.
 
+### Rolling over to a new season
+
+Replace both mission arrays, then update the season block at the top of the
+file:
+
+```ts
+export const SEASON_NAME = "Valkyrie Unbound";
+export const SEASON_MODE = "Arctic Chronicles";
+export const SEASON_ENDS = "2027-01-15";   // from the in-game countdown
+export const releasedWeeks: Week[] = [1, 2];
+```
+
+Also bump `KEY` in [`src/lib/store.ts`](src/lib/store.ts) to a new season slug.
+Saved progress is keyed on it, so changing it starts every visitor from zero
+instead of carrying the old pass's ticks and RP into the new one.
+
 ### Changing the pass rules
 
 ```ts
 export const RP_PER_LEVEL = 100;
 export const MAX_LEVEL = 100;
-export const TOTAL_WEEKS = 8;
+export const TOTAL_WEEKS = 5;
 ```
 
 ## How saving works

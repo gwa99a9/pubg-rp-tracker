@@ -3,6 +3,8 @@ import {
   weeklyMissions,
   seasonMissions,
   releasedWeeks,
+  SEASON_ENDS,
+  SEASON_NAME,
   MAX_LEVEL,
   RP_PER_LEVEL,
   TOTAL_WEEKS,
@@ -380,14 +382,22 @@ export default function App() {
 
   const lastOut = releasedWeeks[releasedWeeks.length - 1] ?? 0;
 
+  // Whole days between now and the end of the pass, floored at zero.
+  const daysLeft = Math.max(
+    0,
+    Math.ceil((new Date(SEASON_ENDS).getTime() - Date.now()) / 86_400_000),
+  );
+  const perDay = daysLeft > 0 ? Math.ceil(left / daysLeft) : 0;
+
   return (
     <div className="min-h-screen">
       <div className="mx-auto w-full max-w-[980px] px-4 sm:px-6 pb-20">
         {/* ---------- page head ---------- */}
         <header className="pt-10 sm:pt-12">
           <p className="cond m-0" style={{ fontSize: 15, color: "var(--flare)" }}>
-            Royale Pass · weeks 1–{lastOut} of {TOTAL_WEEKS} released ·{" "}
+            {SEASON_NAME} · weeks 1–{lastOut} of {TOTAL_WEEKS} released ·{" "}
             {seasonMissions.length} season challenges
+            {daysLeft > 0 && ` · ${daysLeft} days left`}
           </p>
           <h1
             className="cond m-0 mt-1"
@@ -462,6 +472,7 @@ export default function App() {
             style={{ fontSize: 14.5, color: "var(--gold-deep)" }}
           >
             worth {Math.floor((totals.total - totals.earned) / RP_PER_LEVEL)} more levels
+            {perDay > 0 && ` · ${fmt(perDay)} RP a day to clear it`}
           </span>
         </div>
 

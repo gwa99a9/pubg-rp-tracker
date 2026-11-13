@@ -7,7 +7,9 @@
  * degrades to an in-memory session instead of breaking the page.
  */
 
-const KEY = "pubg-rp-weeks-1-2";
+// Keyed per season: a new season starts everyone from zero rather than
+// carrying the previous pass's ticks and RP across.
+const KEY = "pubg-rp-valkyrie-unbound";
 
 export type Saved = {
   v: 1;
