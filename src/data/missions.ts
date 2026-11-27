@@ -24,10 +24,10 @@ export const RP_PER_LEVEL = 100;
 export const MAX_LEVEL = 100;
 
 /** Weeks the pass runs for. Weeks past `releasedWeeks` are shown but locked. */
-export const TOTAL_WEEKS = 5;
-export const releasedWeeks: Week[] = [1, 2];
+export const TOTAL_WEEKS = 6;
+export const releasedWeeks: Week[] = [1, 2, 3, 4];
 
-export type Week = 1 | 2 | 3 | 4 | 5;
+export type Week = 1 | 2 | 3 | 4 | 5 | 6;
 
 export type Mission = {
   id: string;
@@ -41,7 +41,11 @@ export type Mission = {
   item?: string;
   /** How many times this one can be turned in. 1 for all but the weekly grind. */
   repeats: number;
-  /** Mission Cards needed to buy this one out. */
+  /**
+   * Mission Cards needed to buy this one out. Fixed per RP value:
+   * 30->1, 60->2, 100->4, 150->6, 200->8. Coupon missions and the
+   * repeatable weekly grind have no buyout option.
+   */
   cards?: number;
 };
 
@@ -174,6 +178,7 @@ export const weeklyMissions: Mission[] = [
     text: "Win a Classic match 1 time while wearing a Military Vest (Lv. 3).",
     rp: 100,
     repeats: 1,
+    cards: 4,
   },
 
   // ---------- WEEK 2 ----------
@@ -291,6 +296,7 @@ export const weeklyMissions: Mission[] = [
     text: "Eliminate 1 enemy with SCAR-L in Classic Mode.",
     rp: 30,
     repeats: 1,
+    cards: 1,
   },
   {
     id: "w2-livik",
@@ -299,6 +305,252 @@ export const weeklyMissions: Mission[] = [
     text: "Finish in the Top 10 in Livik 1 time in Classic Mode.",
     rp: 30,
     repeats: 1,
+    cards: 1,
+  },
+
+  // ---------- WEEK 3 ----------
+  {
+    id: "w3-climb",
+    week: 3,
+    tag: "Elite",
+    text: "Climb over obstacles 10 times in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w3-sosnovka",
+    week: 3,
+    tag: "Elite",
+    text: "Land on any rooftop in Sosnovka Military Base (Erangel) 1 time in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w3-longshot",
+    week: 3,
+    tag: "Elite",
+    text: "Eliminate an enemy from 100 meters away 2 times in Classic Mode.",
+    rp: null,
+    item: "Crate coupon \u00d71",
+    repeats: 1,
+  },
+  {
+    id: "w3-grind",
+    week: 3,
+    tag: "Repeatable",
+    text: "(Week 3 only) Spend 60 minutes in matches.",
+    rp: 60,
+    repeats: 6,
+  },
+  {
+    id: "w3-rescue",
+    week: 3,
+    tag: "Friend Boost",
+    text: "Rescue teammates 10 times in Classic Mode.",
+    rp: 150,
+    repeats: 1,
+    cards: 6,
+  },
+  {
+    id: "w3-lmg",
+    week: 3,
+    tag: "Friend Bonus",
+    text: "Eliminate 5 enemies with LMG in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w3-airdrop",
+    week: 3,
+    tag: "Team Boost",
+    text: "Open air drops 6 times with teammates in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w3-akm",
+    week: 3,
+    tag: null,
+    text: "Pick up AKM in 5 matches in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w3-norsehorn",
+    week: 3,
+    tag: null,
+    text: "Blow the Norse Horn 1 time in Classic Mode \u2013 Arctic Chronicles.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w3-login",
+    week: 3,
+    tag: null,
+    text: "(Week 3 only) Log into the game on a total of 3 days.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w3-quickdraw",
+    week: 3,
+    tag: null,
+    text: "Pick up Extended Quickdraw Mag 1 time in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    id: "w3-m416",
+    week: 3,
+    tag: null,
+    text: "Eliminate 1 enemy with M416 in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    id: "w3-medkit",
+    week: 3,
+    tag: null,
+    text: "Use a Med Kit 1 time in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    id: "w3-compensator",
+    week: 3,
+    tag: null,
+    text: "Pick up Compensator 1 time in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+
+  // ---------- WEEK 4 ----------
+  {
+    id: "w4-compensator-5",
+    week: 4,
+    tag: "Elite",
+    text: "Pick up Compensator in 5 matches in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w4-quickkill",
+    week: 4,
+    tag: "Elite",
+    text: "Eliminate 1 enemy within 60 seconds of landing in Classic Mode.",
+    rp: 100,
+    repeats: 1,
+    cards: 4,
+  },
+  {
+    id: "w4-spetsnaz-pickup",
+    week: 4,
+    tag: "Elite",
+    text: "Pick up Spetsnaz Helmet (Lv. 3) 2 times in Classic Mode.",
+    rp: null,
+    item: "Crate coupon \u00d71",
+    repeats: 1,
+  },
+  {
+    id: "w4-grind",
+    week: 4,
+    tag: "Repeatable",
+    text: "(Week 4 only) Spend 60 minutes in matches.",
+    rp: 60,
+    repeats: 6,
+  },
+  {
+    id: "w4-smg",
+    week: 4,
+    tag: "Friend Boost",
+    text: "Eliminate 5 enemies with an SMG in Erangel in Classic Mode.",
+    rp: 150,
+    repeats: 1,
+    cards: 6,
+  },
+  {
+    id: "w4-top3",
+    week: 4,
+    tag: "Friend Bonus",
+    text: "Finish 3 times in the Top 3 in Classic Mode with friends.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w4-pan",
+    week: 4,
+    tag: "Team Boost",
+    text: "Eliminate players with the Pan 2 times with teammates in Classic Mode.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w4-clanbattle",
+    week: 4,
+    tag: null,
+    text: "Obtain 50 Contribution Points during the Clan Battle event.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w4-arena",
+    week: 4,
+    tag: null,
+    text: "Eliminate more than 10 players in a single Arena Mode match.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w4-login",
+    week: 4,
+    tag: null,
+    text: "(Week 4 only) Log into the game on a total of 3 days.",
+    rp: 60,
+    repeats: 1,
+    cards: 2,
+  },
+  {
+    id: "w4-tires",
+    week: 4,
+    tag: null,
+    text: "Destroy 2 vehicle tires in Classic Mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    id: "w4-pistol",
+    week: 4,
+    tag: null,
+    text: "Eliminate 1 enemy with a Pistol in any mode.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
+  },
+  {
+    id: "w4-giftbp",
+    week: 4,
+    tag: null,
+    text: "Gift or gift back BP to 3 different friends.",
+    rp: 30,
+    repeats: 1,
+    cards: 1,
   },
 ];
 
@@ -459,6 +711,7 @@ export const seasonMissions: Mission[] = [
     text: "Spend a total of 10 minutes in the game during the season.",
     rp: 100,
     repeats: 1,
+    cards: 4,
   },
   {
     id: "s-min-20",
@@ -466,6 +719,7 @@ export const seasonMissions: Mission[] = [
     text: "Spend a total of 20 minutes in the game during the season.",
     rp: 100,
     repeats: 1,
+    cards: 4,
   },
   {
     id: "s-min-60",
@@ -473,6 +727,7 @@ export const seasonMissions: Mission[] = [
     text: "Spend a total of 60 minutes in the game during the season.",
     rp: 100,
     repeats: 1,
+    cards: 4,
   },
   {
     id: "s-min-100",
@@ -537,6 +792,7 @@ export const seasonMissions: Mission[] = [
     text: "Eliminate 6 enemies in a single Classic Mode match.",
     rp: 100,
     repeats: 1,
+    cards: 4,
   },
   {
     id: "s-platinum",
@@ -544,6 +800,7 @@ export const seasonMissions: Mission[] = [
     text: "Reach Platinum or above in Classic Mode.",
     rp: 150,
     repeats: 1,
+    cards: 6,
   },
 ];
 

@@ -9,8 +9,8 @@ two people opening the same page see their own lists.
 
 ## What it shows
 
-- **Weekly challenges** — 28 missions across weeks 1 and 2, worth 2,260 RP.
-  Weeks 3 to 5 appear locked until they drop.
+- **Weekly challenges** — 55 missions across weeks 1 to 4, worth 4,490 RP.
+  Weeks 5 and 6 appear locked until they drop.
 - **Season challenges** — 30 missions worth 4,100 RP.
 - **Pass level** — your level out of 100, RP needed for the next one, and how far
   every remaining mission would carry you.
@@ -18,8 +18,8 @@ two people opening the same page see their own lists.
   BP, events, rank rewards) either as a raw number or by level, and mission ticks
   stack on top of it.
 
-Both lists together are worth 6,360 RP. A level costs 100 RP, so the missions
-alone are worth 63 levels. Level 100 is a milestone rather than a ceiling — the
+Both lists together are worth 8,590 RP. A level costs 100 RP, so the missions
+alone are worth 85 levels. Level 100 is a milestone rather than a ceiling — the
 tracker keeps counting levels and RP past it. The tracker makes that gap explicit instead of letting you
 assume missions are enough.
 
@@ -71,7 +71,9 @@ The week button unlocks, a new section appears, and every total recalculates.
   text: "Eliminate 5 enemies with headshots in Classic Mode.",
   rp: 60,                 // or  rp: null, item: "Crate coupon x1"
   repeats: 1,             // 6 for the repeatable weekly grind missions
-  cards: 2,               // omit when there is no buyout option
+  cards: 2,               // fixed per RP: 30->1, 60->2, 100->4,
+                          // 150->6, 200->8; omit for coupon
+                          // missions and the repeatable grind
 }
 ```
 
@@ -88,7 +90,7 @@ file:
 export const SEASON_NAME = "Valkyrie Unbound";
 export const SEASON_MODE = "Arctic Chronicles";
 export const SEASON_ENDS = "2027-01-15";   // from the in-game countdown
-export const releasedWeeks: Week[] = [1, 2];
+export const releasedWeeks: Week[] = [1, 2, 3, 4];
 ```
 
 Also bump `KEY` in [`src/lib/store.ts`](src/lib/store.ts) to a new season slug.
@@ -100,7 +102,7 @@ instead of carrying the old pass's ticks and RP into the new one.
 ```ts
 export const RP_PER_LEVEL = 100;
 export const MAX_LEVEL = 100;
-export const TOTAL_WEEKS = 5;
+export const TOTAL_WEEKS = 6;
 ```
 
 ## How saving works
